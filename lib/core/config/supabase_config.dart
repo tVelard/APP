@@ -1,10 +1,24 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SupabaseConfig {
-  // TODO: Remplacez ces valeurs par vos propres clés Supabase
-  // Vous pouvez les trouver dans: Supabase Dashboard > Settings > API
-  static const String supabaseUrl = 'VOTRE_SUPABASE_URL';
-  static const String supabaseAnonKey = 'VOTRE_SUPABASE_ANON_KEY';
+  // Les clés sont chargées depuis le fichier .env pour la sécurité
+  // ⚠️ NE JAMAIS mettre les clés API directement dans le code
+  static String get supabaseUrl {
+    final url = dotenv.env['SUPABASE_URL'];
+    if (url == null || url.isEmpty) {
+      throw Exception('SUPABASE_URL non trouvée dans le fichier .env');
+    }
+    return url;
+  }
+
+  static String get supabaseAnonKey {
+    final key = dotenv.env['SUPABASE_ANON_KEY'];
+    if (key == null || key.isEmpty) {
+      throw Exception('SUPABASE_ANON_KEY non trouvée dans le fichier .env');
+    }
+    return key;
+  }
 
   static Future<void> initialize() async {
     await Supabase.initialize(

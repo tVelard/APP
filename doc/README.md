@@ -2,75 +2,6 @@
 
 Une application mobile Flutter complète avec authentification par email et mot de passe utilisant Supabase.
 
-## Fonctionnalités
-
-- Inscription avec email et mot de passe
-- Connexion avec email et mot de passe
-- Déconnexion
-- Réinitialisation du mot de passe
-- Protection des routes (redirection automatique)
-- Gestion d'état avec Riverpod
-- Navigation avec GoRouter
-- Interface utilisateur Material Design 3
-
-## Prérequis
-
-- Flutter SDK (>=3.0.0)
-- macOS avec Xcode installé
-- Un compte Supabase (gratuit sur [supabase.com](https://supabase.com))
-- Un iPhone ou simulateur iOS pour tester
-
-## Configuration
-
-### 1. Créer un projet Supabase
-
-1. Allez sur [supabase.com](https://supabase.com) et créez un compte
-2. Créez un nouveau projet
-3. Attendez que le projet soit configuré (quelques minutes)
-
-### 2. Récupérer les clés API
-
-1. Dans votre tableau de bord Supabase, allez dans **Settings** > **API**
-2. Copiez les valeurs suivantes:
-   - `Project URL` (URL de votre projet)
-   - `anon public` key (clé publique anonyme)
-
-### 3. Configurer l'application
-
-Ouvrez le fichier `lib/core/config/supabase_config.dart` et remplacez les valeurs:
-
-```dart
-static const String supabaseUrl = 'VOTRE_URL_SUPABASE';
-static const String supabaseAnonKey = 'VOTRE_CLE_ANON_SUPABASE';
-```
-
-### 4. Configuration de l'authentification Supabase
-
-1. Dans votre tableau de bord Supabase, allez dans **Authentication** > **Providers**
-2. Assurez-vous que **Email** est activé
-3. Dans **Authentication** > **Email Templates**, vous pouvez personnaliser les emails
-
-### 5. Configuration des URL de redirection (Optionnel)
-
-Pour la réinitialisation de mot de passe et la confirmation d'email:
-
-#### iOS (ios/Runner/Info.plist)
-
-```xml
-<key>FlutterDeepLinkingEnabled</key>
-<true/>
-<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>io.supabase.tracktraining</string>
-        </array>
-    </dict>
-</array>
-```
 
 ## Installation
 
@@ -117,36 +48,6 @@ lib/
 └── main.dart                            # Point d'entrée
 ```
 
-## Utilisation
-
-### Inscription
-
-1. Lancez l'application
-2. Cliquez sur "S'inscrire"
-3. Entrez votre email et mot de passe
-4. Vérifiez votre email (si la confirmation est activée dans Supabase)
-
-### Connexion
-
-1. Entrez votre email et mot de passe
-2. Cliquez sur "Se connecter"
-
-### Mot de passe oublié
-
-1. Sur l'écran de connexion, entrez votre email
-2. Cliquez sur "Mot de passe oublié ?"
-3. Vérifiez votre email pour le lien de réinitialisation
-
-### Déconnexion
-
-1. Sur l'écran principal, cliquez sur l'icône de déconnexion dans l'AppBar
-
-## Sécurité
-
-- Les mots de passe doivent contenir au moins 6 caractères
-- Les emails sont validés avec une expression régulière
-- L'authentification utilise le flow PKCE (Proof Key for Code Exchange)
-- Les sessions sont gérées automatiquement par Supabase
 
 ## Personnalisation
 

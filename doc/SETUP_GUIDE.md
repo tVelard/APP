@@ -1,6 +1,6 @@
 # Guide de Configuration Complète
 
-## 1. Installation de Flutter
+## Installation de Flutter
 
 ### Windows
 ```bash
@@ -25,7 +25,7 @@ flutter doctor
 flutter doctor
 ```
 
-## 2. Configuration du Projet Supabase
+## Configuration du Projet Supabase
 
 ### Étape 1: Créer un compte Supabase
 
@@ -69,71 +69,14 @@ static const String supabaseUrl = 'https://xxxxx.supabase.co';
 static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 ```
 
-## 3. Installation des Dépendances
+## Installation des Dépendances
 
 ```bash
 # Dans le répertoire du projet
 flutter pub get
 ```
 
-## 4. Configuration Android
-
-### Étape 1: AndroidManifest.xml
-
-Ouvrez `android/app/src/main/AndroidManifest.xml` et ajoutez les permissions Internet:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Ajoutez ces permissions avant <application> -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-    <application
-        android:label="TrackTraining"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
-
-        <!-- Configuration existante -->
-
-        <!-- Ajoutez ceci pour les deep links (optionnel) -->
-        <meta-data
-            android:name="io.supabase.FlutterDeepLinkingEnabled"
-            android:value="true" />
-    </application>
-
-    <!-- Ajoutez ceci avant </manifest> pour les deep links (optionnel) -->
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
-        </intent>
-    </queries>
-</manifest>
-```
-
-### Étape 2: build.gradle (app)
-
-Ouvrez `android/app/build.gradle` et vérifiez:
-
-```gradle
-android {
-    compileSdkVersion 34
-
-    defaultConfig {
-        minSdkVersion 21  // Minimum requis
-        targetSdkVersion 34
-    }
-}
-```
-
-### Étape 3: Tester sur Android
-
-```bash
-# Connectez un appareil Android ou lancez un émulateur
-flutter run
-```
-
-## 5. Configuration iOS
+##  Configuration iOS
 
 ### Étape 1: Info.plist
 
@@ -186,7 +129,7 @@ cd ..
 flutter run -d ios
 ```
 
-## 6. Vérification de l'Installation
+## Vérification de l'Installation
 
 ### Commandes de vérification
 
@@ -211,101 +154,10 @@ flutter test
 - [ ] Projet Supabase créé
 - [ ] Clés API copiées dans `supabase_config.dart`
 - [ ] `flutter pub get` exécuté avec succès
-- [ ] AndroidManifest.xml configuré
 - [ ] Info.plist configuré (pour iOS)
 - [ ] L'application se lance sans erreur
 
-## 7. Premiers Tests
-
-### Test 1: Inscription
-
-1. Lancez l'application
-2. Cliquez sur "S'inscrire"
-3. Entrez un email de test: `test@example.com`
-4. Entrez un mot de passe: `password123`
-5. Cliquez sur "S'inscrire"
-6. Vous devriez voir un message de succès
-
-### Test 2: Vérifier dans Supabase
-
-1. Allez dans votre tableau de bord Supabase
-2. **Authentication** > **Users**
-3. Vous devriez voir l'utilisateur `test@example.com`
-
-### Test 3: Connexion
-
-1. Sur l'écran de connexion
-2. Entrez l'email et le mot de passe
-3. Vous devriez être redirigé vers l'écran d'accueil
-
-### Test 4: Déconnexion
-
-1. Sur l'écran d'accueil
-2. Cliquez sur l'icône de déconnexion
-3. Vous devriez être redirigé vers l'écran de connexion
-
-## 8. Problèmes Courants
-
-### "Failed to resolve: supabase_flutter"
-
-```bash
-flutter pub cache repair
-flutter clean
-flutter pub get
-```
-
-### "MissingPluginException"
-
-```bash
-flutter clean
-flutter pub get
-flutter run
-```
-
-### Erreur de compilation Android
-
-```bash
-cd android
-./gradlew clean
-cd ..
-flutter clean
-flutter run
-```
-
-### Erreur de pods iOS
-
-```bash
-cd ios
-rm -rf Pods
-rm Podfile.lock
-pod install
-cd ..
-flutter clean
-flutter run
-```
-
-### "Invalid login credentials"
-
-- Vérifiez que l'utilisateur existe dans Supabase
-- Vérifiez que l'email est confirmé (ou désactivez la confirmation)
-- Vérifiez que le mot de passe est correct
-
-### L'application ne se connecte pas à Supabase
-
-- Vérifiez les URL et clés API dans `supabase_config.dart`
-- Vérifiez votre connexion Internet
-- Vérifiez que le projet Supabase est actif
-
-## 9. Configuration Avancée
-
-### Email Templates (Templates d'Email)
-
-1. Dans Supabase: **Authentication** > **Email Templates**
-2. Personnalisez les templates:
-   - **Confirm signup**: Email de confirmation
-   - **Invite user**: Invitation d'utilisateur
-   - **Magic Link**: Lien de connexion magique
-   - **Reset password**: Réinitialisation de mot de passe
+## Configuration Avancée
 
 ### Row Level Security (RLS)
 
@@ -357,17 +209,69 @@ static String get supabaseUrl => dotenv.env['SUPABASE_URL']!;
 static String get supabaseAnonKey => dotenv.env['SUPABASE_ANON_KEY']!;
 ```
 
-## 10. Déploiement
 
-### Android (Google Play Store)
+## Quick start
+
+### Lancer l'application
 
 ```bash
-# Générer un APK de release
-flutter build apk --release
+# Sur simulateur iOS
+flutter run -d ios
 
-# Ou générer un App Bundle (recommandé)
-flutter build appbundle --release
+# Sur iPhone physique
+flutter run
 ```
+
+### Commandes Utiles
+
+```bash
+# Vérifier la configuration
+flutter doctor -v
+
+# Lister les appareils iOS disponibles
+flutter devices
+
+# Nettoyer le projet
+flutter clean
+
+# Obtenir les dépendances
+flutter pub get
+
+# Analyser le code
+flutter analyze
+
+# Lancer sur iOS
+flutter run -d ios
+
+# Build iOS
+flutter build ios --release
+```
+
+### Prochaines Étapes
+
+- Lisez [USAGE_EXAMPLES.md](USAGE_EXAMPLES.md) pour voir comment utiliser l'auth
+- Consultez [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) pour comprendre l'architecture
+- Référez-vous à [SETUP_GUIDE.md](SETUP_GUIDE.md) pour la configuration avancée
+
+### Pour ajouter des fonctionnalités
+
+1. **Ajouter un profil utilisateur**: Voir [USAGE_EXAMPLES.md](USAGE_EXAMPLES.md) section 7
+2. **Ajouter une nouvelle page**: Créer un fichier dans `features/` et ajouter une route
+3. **Modifier le thème**: Éditez `main.dart` section `theme`
+
+### Configuration de Production
+
+Avant de déployer en production:
+
+1.  Activez la confirmation d'email dans Supabase
+2.  Configurez les Row Level Security (RLS) policies
+3.  Utilisez des variables d'environnement pour les secrets
+4.  Testez sur de vrais iPhones
+5.  Configurez le signing iOS et les certificats
+
+
+
+## Déploiement
 
 ### iOS (App Store)
 
@@ -375,10 +279,3 @@ flutter build appbundle --release
 # Générer un build iOS
 flutter build ios --release
 ```
-
-## Support
-
-Pour toute question ou problème:
-- Documentation Flutter: https://flutter.dev/docs
-- Documentation Supabase: https://supabase.com/docs
-- Stack Overflow: https://stackoverflow.com/questions/tagged/flutter

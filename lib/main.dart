@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/config/supabase_config.dart';
 import 'core/router/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialiser Supabase
+  // Charger les variables d'environnement depuis le fichier .env
+  await dotenv.load(fileName: '.env');
+
+  // Initialiser Supabase avec les clés du .env
   await SupabaseConfig.initialize();
 
   runApp(
