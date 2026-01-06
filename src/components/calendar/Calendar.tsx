@@ -26,9 +26,14 @@ interface CalendarProps {
   onWorkoutSelect: (workout: Workout) => void
 }
 
+const STORAGE_KEY = 'tracktraining-calendar-view'
+
 export function Calendar({ onDateSelect, onWorkoutSelect }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [viewMode, setViewMode] = useState<ViewMode>('month')
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    return (saved === 'week' || saved === 'month') ? saved : 'month'
+  })
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const { getWorkoutsByMonth, loading } = useWorkouts()
@@ -36,6 +41,11 @@ export function Calendar({ onDateSelect, onWorkoutSelect }: CalendarProps) {
   useEffect(() => {
     loadWorkouts()
   }, [currentDate, viewMode])
+
+  const handleViewModeChange = (mode: ViewMode) => {
+    setViewMode(mode)
+    localStorage.setItem(STORAGE_KEY, mode)
+  }
 
   const loadWorkouts = async () => {
     const year = currentDate.getFullYear()
@@ -114,7 +124,7 @@ export function Calendar({ onDateSelect, onWorkoutSelect }: CalendarProps) {
             {/* Toggle vue mensuelle/hebdomadaire */}
             <div className="flex items-center bg-gray-700 rounded-lg p-1">
               <button
-                onClick={() => setViewMode('month')}
+                onClick={() => handleViewModeChange('month')}
                 className={`flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
                   viewMode === 'month'
                     ? 'bg-primary-600 text-white'
@@ -126,7 +136,7 @@ export function Calendar({ onDateSelect, onWorkoutSelect }: CalendarProps) {
                 <span className="hidden sm:inline">Mois</span>
               </button>
               <button
-                onClick={() => setViewMode('week')}
+                onClick={() => handleViewModeChange('week')}
                 className={`flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
                   viewMode === 'week'
                     ? 'bg-primary-600 text-white'

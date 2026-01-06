@@ -377,3 +377,10 @@ BEGIN
     RETURN new_workout_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+
+-- ============================================
+-- En plus du code exécité j'ai fais ca 
+-- Ajouter la colonne avatar_url à la table profiles dans Supabase :
+--ALTER TABLE profiles ADD COLUMN avatar_url TEXT;
+--Créer un bucket de stockage nommé avatars dans Supabase Storage avec les permissions appropriées pour l'upload public.
