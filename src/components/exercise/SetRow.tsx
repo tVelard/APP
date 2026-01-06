@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Trash2, ChevronDown, ChevronRight, Plus, Loader2 } from 'lucide-react'
 import { useSets, useDropsets } from '@/hooks/useExercises'
 import { DropsetEntry } from '@/components/exercise/DropsetEntry'
@@ -19,8 +19,16 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
   const [weight, setWeight] = useState(set.weight.toString())
   const [restTime, setRestTime] = useState(set.rest_time?.toString() || '')
   const [isDropset, setIsDropset] = useState(set.is_dropset)
-  const [isExpanded, setIsExpanded] = useState(false)
-  
+  // Ouvrir automatiquement si c'est un dropset (avec ou sans entrées)
+  const [isExpanded, setIsExpanded] = useState(set.is_dropset)
+  const [localDropsetEntries, setLocalDropsetEntries] = useState(set.dropset_entries || [])
+
+  // Mettre à jour les entrées locales quand les props changent, mais garder l'état d'expansion
+  useEffect(() => {
+    setLocalDropsetEntries(set.dropset_entries || [])
+    setIsDropset(set.is_dropset)
+  }, [set.dropset_entries, set.is_dropset])
+
 
   const handleUpdate = async (field: string, value: string | boolean) => {
     let updates: Record<string, number | boolean | null> = {}
@@ -59,12 +67,20 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
     await handleUpdate('is_dropset', newValue)
     if (newValue) {
       setIsExpanded(true)
+      // Créer automatiquement la première entrée dropset
+      await createDropsetEntry({
+        set_id: set.id,
+        position: 0,
+        reps: set.reps,
+        weight: set.weight * 0.8, // -20% par défaut
+      })
+      onUpdate()
     }
   }
 
   const handleAddDropsetEntry = async () => {
-    const position = set.dropset_entries?.length || 0
-    const lastEntry = set.dropset_entries?.[position - 1]
+    const position = localDropsetEntries.length
+    const lastEntry = localDropsetEntries[position - 1]
 
     await createDropsetEntry({
       set_id: set.id,
@@ -76,7 +92,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
   }
 
   return (
-    <div className="bg-gray-50 rounded-lg overflow-hidden">
+    <div className="bg-gray-700 rounded-lg overflow-hidden">
       {/* Main Row */}
       <div className="grid grid-cols-12 gap-2 items-center p-2">
         {/* Set Number & Dropset Toggle */}
@@ -84,7 +100,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
           {isDropset && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-0.5 text-gray-400 hover:text-gray-600"
+              className="p-0.5 text-gray-400 hover:text-gray-200"
             >
               {isExpanded ? (
                 <ChevronDown className="h-3 w-3" />
@@ -93,7 +109,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
               )}
             </button>
           )}
-          <span className="text-sm font-medium text-gray-700">{setNumber}</span>
+          <span className="text-sm font-medium text-gray-300">{setNumber}</span>
         </div>
 
         {/* Reps */}
@@ -103,7 +119,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
             value={reps}
             onChange={(e) => setReps(e.target.value)}
             onBlur={() => handleUpdate('reps', reps)}
-            className="w-full px-2 py-1.5 text-center text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            className="w-full px-2 py-1.5 text-center text-sm bg-gray-600 border border-gray-500 rounded-lg text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
             min="0"
           />
         </div>
@@ -116,7 +132,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
               onBlur={() => handleUpdate('weight', weight)}
-              className="w-full px-2 py-1.5 text-center text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none pr-7"
+              className="w-full px-2 py-1.5 text-center text-sm bg-gray-600 border border-gray-500 rounded-lg text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none pr-7"
               min="0"
               step="0.5"
             />
@@ -132,7 +148,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
               value={restTime}
               onChange={(e) => setRestTime(e.target.value)}
               onBlur={() => handleUpdate('rest_time', restTime)}
-              className="w-full px-2 py-1.5 text-center text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none pr-5"
+              className="w-full px-2 py-1.5 text-center text-sm bg-gray-600 border border-gray-500 rounded-lg text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none pr-5"
               placeholder="-"
               min="0"
             />
@@ -146,8 +162,8 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
             onClick={handleToggleDropset}
             className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
               isDropset
-                ? 'bg-orange-100 text-orange-700'
-                : 'bg-gray-100 text-gray-500 hover:bg-orange-50 hover:text-orange-600'
+                ? 'bg-orange-900/50 text-orange-400 border border-orange-700'
+                : 'bg-gray-600 text-gray-400 hover:bg-orange-900/30 hover:text-orange-400'
             }`}
             title="Dropset"
           >
@@ -156,7 +172,7 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
           <button
             onClick={handleDelete}
             disabled={loading}
-            className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors"
+            className="p-1.5 text-red-400 hover:bg-red-900/50 rounded transition-colors"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -170,8 +186,8 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
       {/* Dropset Entries */}
       {isDropset && isExpanded && (
         <div className="px-2 pb-2 space-y-1">
-          <div className="ml-4 pl-4 border-l-2 border-orange-300 space-y-1">
-            {set.dropset_entries?.map((entry: DropsetEntryType, index: number) => (
+          <div className="ml-4 pl-4 border-l-2 border-orange-600 space-y-1">
+            {localDropsetEntries.map((entry: DropsetEntryType, index: number) => (
               <DropsetEntry
                 key={entry.id}
                 entry={entry}
@@ -183,10 +199,10 @@ export function SetRow({ set, setNumber, onUpdate, onDelete }: SetRowProps) {
 
             <button
               onClick={handleAddDropsetEntry}
-              className="w-full flex items-center justify-center gap-1 py-2 text-xs text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+              className="w-full flex items-center justify-center gap-1 py-2 text-xs text-orange-400 hover:bg-orange-900/30 rounded-lg transition-colors"
             >
               <Plus className="h-3 w-3" />
-              Ajouter une sous-série
+              Ajouter un dropset
             </button>
           </div>
         </div>

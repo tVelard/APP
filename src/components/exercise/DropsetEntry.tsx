@@ -36,8 +36,8 @@ export function DropsetEntry({ entry, entryNumber, onUpdate, onDelete }: Dropset
   }
 
   return (
-    <div className="flex items-center gap-2 py-1.5 px-2 bg-orange-50 rounded-lg">
-      <span className="text-xs font-medium text-orange-600 w-6">
+    <div className="flex items-center gap-2 py-1.5 px-2 bg-orange-900/30 rounded-lg">
+      <span className="text-xs font-medium text-orange-400 w-6">
         {entryNumber}.
       </span>
 
@@ -48,13 +48,13 @@ export function DropsetEntry({ entry, entryNumber, onUpdate, onDelete }: Dropset
             value={reps}
             onChange={(e) => setReps(e.target.value)}
             onBlur={() => handleUpdate('reps', reps)}
-            className="w-full px-2 py-1 text-center text-xs border border-orange-200 rounded focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white"
+            className="w-full px-2 py-1 text-center text-xs bg-gray-700 border border-orange-700/50 rounded text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
             min="0"
             placeholder="Reps"
           />
         </div>
 
-        <span className="text-xs text-gray-400">×</span>
+        <span className="text-xs text-gray-500">×</span>
 
         <div className="flex-1 relative">
           <input
@@ -62,19 +62,19 @@ export function DropsetEntry({ entry, entryNumber, onUpdate, onDelete }: Dropset
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             onBlur={() => handleUpdate('weight', weight)}
-            className="w-full px-2 py-1 text-center text-xs border border-orange-200 rounded focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white pr-6"
+            className="w-full px-2 py-1 text-center text-xs bg-gray-700 border border-orange-700/50 rounded text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none pr-6"
             min="0"
             step="0.5"
             placeholder="Poids"
           />
-          <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-gray-400">kg</span>
+          <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-gray-500">kg</span>
         </div>
       </div>
 
       <button
         onClick={handleDelete}
         disabled={loading}
-        className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+        className="p-1 text-red-400 hover:text-red-300 hover:bg-red-900/50 rounded transition-colors"
       >
         {loading ? (
           <Loader2 className="h-3 w-3 animate-spin" />

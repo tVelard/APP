@@ -99,25 +99,25 @@ export function AddExerciseModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+      <div className="bg-gray-800 rounded-xl shadow-xl border border-gray-700 w-full max-w-md">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-100">
             Ajouter un exercice
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
           >
-            <X className="h-5 w-5 text-gray-500" />
+            <X className="h-5 w-5 text-gray-400" />
           </button>
         </div>
 
         {/* Content */}
         <div className="p-4 space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div className="p-3 bg-red-900/50 border border-red-700 rounded-lg text-red-300 text-sm">
               {error}
             </div>
           )}
@@ -125,7 +125,7 @@ export function AddExerciseModal({
           <div className="relative">
             <label
               htmlFor="exerciseName"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-1"
             >
               Nom de l'exercice
             </label>
@@ -138,7 +138,7 @@ export function AddExerciseModal({
                 setShowSuggestions(true)
               }}
               onFocus={() => setShowSuggestions(true)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
               placeholder="Ex: Développé couché, Squat..."
               autoFocus
               autoComplete="off"
@@ -146,12 +146,12 @@ export function AddExerciseModal({
 
             {/* Suggestions dropdown */}
             {showSuggestions && filteredSuggestions.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+              <div className="absolute z-10 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg overflow-hidden">
                 {filteredSuggestions.map((suggestion) => (
                   <button
                     key={suggestion}
                     onClick={() => handleSelectSuggestion(suggestion)}
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                    className="w-full px-4 py-2 text-left text-sm text-gray-200 hover:bg-gray-600 transition-colors"
                   >
                     {suggestion}
                   </button>
@@ -169,7 +169,7 @@ export function AddExerciseModal({
                   <button
                     key={name}
                     onClick={() => setExerciseName(name)}
-                    className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors"
+                    className="px-3 py-1 text-sm bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600 transition-colors"
                   >
                     {name}
                   </button>
@@ -180,10 +180,10 @@ export function AddExerciseModal({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200 flex gap-3">
+        <div className="p-4 border-t border-gray-700 flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"
           >
             Annuler
           </button>

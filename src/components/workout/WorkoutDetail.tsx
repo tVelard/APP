@@ -77,15 +77,15 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="bg-gray-800 rounded-xl shadow-lg border border-gray-700">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-700">
         <div className="flex items-center gap-3 mb-2">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
           >
-            <ArrowLeft className="h-5 w-5 text-gray-600" />
+            <ArrowLeft className="h-5 w-5 text-gray-400" />
           </button>
 
           {isEditing ? (
@@ -94,13 +94,13 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
                 type="text"
                 value={editedName}
                 onChange={(e) => setEditedName(e.target.value)}
-                className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                className="flex-1 px-3 py-1.5 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                 autoFocus
               />
               <button
                 onClick={handleSaveName}
                 disabled={loading}
-                className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                className="p-2 text-green-400 hover:bg-green-900/50 rounded-lg transition-colors"
               >
                 <Save className="h-5 w-5" />
               </button>
@@ -109,7 +109,7 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
                   setIsEditing(false)
                   setEditedName(workoutData?.name || workout.name)
                 }}
-                className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-gray-400 hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -117,24 +117,24 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
           ) : (
             <>
               <div className="flex-1">
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-100">
                   {workoutData?.name || workout.name}
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-400">
                   {format(new Date(workout.date), 'EEEE d MMMM yyyy', { locale: fr })}
                 </p>
               </div>
 
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-gray-400 hover:bg-gray-700 rounded-lg transition-colors"
                 title="Modifier le nom"
               >
                 <Edit2 className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 text-red-400 hover:bg-red-900/50 rounded-lg transition-colors"
                 title="Supprimer la séance"
               >
                 <Trash2 className="h-5 w-5" />
@@ -165,7 +165,7 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
         {/* Add Exercise Button */}
         <button
           onClick={() => setShowAddExercise(true)}
-          className="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:border-primary-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-600 rounded-xl text-gray-400 hover:border-primary-500 hover:text-primary-400 hover:bg-primary-900/20 transition-colors"
         >
           <Plus className="h-5 w-5" />
           Ajouter un exercice
@@ -174,18 +174,18 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+          <div className="bg-gray-800 rounded-xl shadow-xl border border-gray-700 p-6 max-w-sm w-full">
+            <h3 className="text-lg font-semibold text-gray-100 mb-2">
               Supprimer la séance ?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-400 mb-6">
               Cette action est irréversible. Tous les exercices et séries seront supprimés.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"
               >
                 Annuler
               </button>
