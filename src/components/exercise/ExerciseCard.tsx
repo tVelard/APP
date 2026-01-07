@@ -132,12 +132,14 @@ export function ExerciseCard({ exercise, exerciseNumber, onUpdate, onDelete }: E
         <div className="p-4 space-y-2 bg-gray-800">
           {/* Header */}
           {(exercise.sets?.length || 0) > 0 && (
-            <div className="grid grid-cols-12 gap-2 text-xs font-medium text-gray-500 px-2 mb-2">
-              <div className="col-span-1">#</div>
-              <div className="col-span-3 text-center">Reps</div>
-              <div className="col-span-3 text-center">Poids</div>
-              <div className="col-span-3 text-center">Repos</div>
-              <div className="col-span-2"></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs font-medium text-gray-500 px-2 mb-2">
+              {/* Set number - hidden on mobile */}
+              <div className="hidden sm:block w-8 flex-shrink-0">#</div>
+              <div className="flex-1 text-center">Reps</div>
+              <div className="flex-1 text-center">Poids</div>
+              <div className="flex-1 text-center">Repos</div>
+              {/* Actions spacer */}
+              <div className="w-[72px] sm:w-[84px] flex-shrink-0"></div>
             </div>
           )}
 
