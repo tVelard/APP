@@ -29,7 +29,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-./.claude
+.claude
 
 # OS
 .DS_Store
