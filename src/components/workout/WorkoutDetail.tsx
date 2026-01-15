@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ArrowLeft, Edit2, Trash2, Plus, Loader2, Save, X } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -22,18 +22,36 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
   const [showAddExercise, setShowAddExercise] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
+  const isInitialLoad = useRef(true)
 
   useEffect(() => {
-    loadWorkoutData()
+    loadWorkoutData(true)
   }, [workout.id])
 
-  const loadWorkoutData = async () => {
-    setLoadingData(true)
+  const loadWorkoutData = async (isInitial = false) => {
+    // Only show loading spinner on initial load
+    if (isInitial) {
+      setLoadingData(true)
+      isInitialLoad.current = true
+    }
+
+    // Save scroll position before fetching
+    const scrollY = window.scrollY
+
     const { data } = await getWorkoutWithDetails(workout.id)
     if (data) {
       setWorkoutData(data)
     }
-    setLoadingData(false)
+
+    if (isInitial) {
+      setLoadingData(false)
+      isInitialLoad.current = false
+    } else {
+      // Restore scroll position after state update
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollY)
+      })
+    }
   }
 
   const handleSaveName = async () => {
@@ -57,15 +75,15 @@ export function WorkoutDetail({ workout, onBack, onDelete }: WorkoutDetailProps)
 
   const handleExerciseAdded = () => {
     setShowAddExercise(false)
-    loadWorkoutData()
+    loadWorkoutData(false)
   }
 
   const handleExerciseUpdated = () => {
-    loadWorkoutData()
+    loadWorkoutData(false)
   }
 
   const handleExerciseDeleted = () => {
-    loadWorkoutData()
+    loadWorkoutData(false)
   }
 
   if (loadingData) {
