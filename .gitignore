@@ -31,6 +31,9 @@ yarn-error.log*
 *.sw?
 .claude
 
+# Supabase
+supabase
+
 # OS
 .DS_Store
 Thumbs.db
