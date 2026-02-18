@@ -4,6 +4,7 @@ node_modules
 .pnp.js
 
 supabase
+SUPABASE_SETUP.md
 
 # Build
 dist
